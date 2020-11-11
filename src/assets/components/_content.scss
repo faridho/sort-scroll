@@ -1,0 +1,106 @@
+@import "./color";
+
+$QPadding: 10px;
+$QMargin: 5px;
+
+$info-components: (
+    "top" 18px 135px,
+    "semi-top" 18px 135px,
+    "mid" 28px 5px 65px,
+    "bot" 16px 135px 72px
+);
+
+.nav {
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    padding: $QPadding;
+    width: 100%;
+    z-index:99;
+    background: $background;
+    
+    .title {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .filter {
+        float: right;
+        top:0;
+        margin-right: 50px;
+        
+        .filter-btn {
+            background-color: orange;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+    }
+}
+
+.row {
+    white-space: nowrap;
+    margin-top: 100px;
+
+    .cards {
+        display: inline-block;
+        vertical-align: top;
+        width: 350px;
+        padding: $QPadding;
+        border: 1px solid $borderColor;
+        margin: $QMargin;
+
+        .thumbnail {
+            .img {
+                height: auto;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        @each $type, $font in $info-components {
+            .info-#{$type} {
+                font-size: $font;
+                padding-top: $QPadding;
+                white-space: normal;
+            }   
+        }
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .row {
+        white-space: normal;
+
+        .cards {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+
+            .thumbnail {
+                position: absolute;
+            }
+
+            @each $type, $font, $left, $top in $info-components {
+                .info-#{$type} {
+                    font-size: $font;
+                    padding-top: $QPadding;
+                    white-space: normal;
+                    padding-left: $left;
+                    padding-top: $top;
+                }   
+            }
+
+            .info-bot {
+                position: absolute;
+            }
+        }
+    }
+}
