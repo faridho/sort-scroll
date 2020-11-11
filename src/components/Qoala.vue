@@ -78,7 +78,7 @@ export default {
 
   methods: {
     getUsers() {
-      const fetchData = fetch("https://randomuser.me/api/?results=100");
+      const fetchData = fetch("https://randomuser.me/api/?results=100")
       fetchData
         .then((response) => {
           return response.json();
