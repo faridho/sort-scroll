@@ -1,5 +1,5 @@
 # Qoala Test
-😀 This is a website that only show a list of users responsively mada by vue.js and vuex.
+😀 This is a website that only show a list of users responsively made by vue.js and vuex.
 
 ### Installation NPM
 ```
