@@ -12,29 +12,30 @@
       </div>
     </div>
     <div class="row">
-      <div id="infinite-list">
-        <div
-          class="cards"
-          v-for="(user, index) in users"
-          :key="index"
-          :style="{ background: user.background }"
-        >
-          <div class="thumbnail">
-            <img class="img" :src="user.thumbnail" />
-          </div>
-          <div class="info-top">
-            {{ user.fullName }}
-          </div>
-          <div class="info-semi-top">
-            {{ user.age }}
-          </div>
-          <div class="info-mid">
-            {{ user.address }}
-          </div>
-          <div class="info-bot">
-            {{ user.email }}
-          </div>
+      <div
+        class="cards"
+        v-for="(user, index) in users"
+        :key="index"
+        :style="{ background: user.background }"
+      >
+        <div class="thumbnail">
+          <img class="img" :src="user.thumbnail" />
         </div>
+        <div class="info-top">
+          {{ user.fullName }}
+        </div>
+        <div class="info-semi-top">
+          {{ user.age }}
+        </div>
+        <div class="info-mid">
+          {{ user.address }}
+        </div>
+        <div class="info-bot">
+          {{ user.email }}
+        </div>
+      </div>
+      <div class="loadmore" v-show="loading">
+        {{ loadingText }}
       </div>
     </div>
   </div>
@@ -50,43 +51,45 @@ export default {
       color: "Color",
       city: "City",
     },
-    usersStorage: [],
+    loadingText: "Loading...",
     users: [],
-    page: 1,
     limit: 10,
     windowWidth: window.innerWidth,
+    loading: true
   }),
 
   mounted() {
-    this.getUsers();
+    this.getUsers()
     window.onscroll = () => {
       if (
         window.innerWidth + window.scrollX >= document.body.offsetWidth &&
-        this.windowWidth > 900
+        this.windowWidth > 2000
       ) {
-        this.loadMore();
+        this.loadMore()
       }
 
       if (
         window.innerHeight + window.scrollY >= document.body.offsetHeight &&
         this.windowWidth <= 900
       ) {
-        this.loadMore();
+        setTimeout(() => {
+          this.loadMore()
+        }, 500)
       }
     };
   },
 
   methods: {
     getUsers() {
-      const fetchData = fetch("https://randomuser.me/api/?results=100")
+      const fetchData = fetch("https://randomuser.me/api/?results=100");
       fetchData
         .then((response) => {
-          return response.json();
+          return response.json()
         })
         .then((users) => {
           const userData = [];
           users.results.map((item) => {
-            const age = item.dob.age;
+            const age = item.dob.age
             const background =
               age < 21 ? "red" : age >= 21 && age < 56 ? "green" : "blue";
 
@@ -99,8 +102,8 @@ export default {
               background: background,
             });
           });
-          this.usersStorage = userData;
-          this.users = userData.filter((item, index) => index < this.limit);
+          this.$store.dispatch("storeUsers", userData);
+          this.users = userData.filter((item, index) => index < this.limit)
         });
     },
 
@@ -114,33 +117,34 @@ export default {
       const userFilter = this.users.sort(
         (item, acc) => order[acc.background] - order[item.background]
       );
-      this.users = userFilter;
+      this.users = userFilter
     },
 
     filterCity() {
       const userFilter = this.users.sort((item, acc) => {
         if (item.address < acc.address) {
-          return -1;
+          return -1
         }
         if (item.address > acc.address) {
-          return 1;
+          return 1
         }
-        return 0;
+        return 0
       });
       this.users = userFilter;
     },
 
     loadMore() {
-      const moreUsers = this.usersStorage.filter(
+      const usersStorage = this.$store.state.usersStorage
+      const moreUsers = usersStorage.filter(
         (item, index) =>
           index > this.users.length - 1 && index < this.users.length - 1 + 11
       );
-      this.users = this.users.concat(moreUsers);
-    },
-  },
+      this.users = this.users.concat(moreUsers)
 
-  watch: {
-    scroll() {},
+      if(this.users.length == 100) {
+        this.loading = false
+      }
+    },
   },
 };
 </script>
