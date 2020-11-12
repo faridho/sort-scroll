@@ -228,7 +228,7 @@ methods: {
 4. Bonus (Nice to have):
 - Create a Test (TDD or automation)
 
-Below is short test spec for components
+Below is short test spec for components by jest.
 ```
 import Qoala from "../components/Qoala"
 
@@ -253,7 +253,7 @@ describe("Component Test", () => {
 })
 ```
 
-Below is short test spec for vuex store
+Below is short test spec for vuex store by jest.
 ```
 import { mutations } from "../store/index"
 
