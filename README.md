@@ -289,6 +289,11 @@ describe("Vuex Store Test", () => {
 })
 ```
 
+Run for test
+```
+npm run test
+```
+
 - Already Deployed and saved on repository (can be cloned)
 You can see production link via the link https://myqoala.herokuapp.com/ 
 
